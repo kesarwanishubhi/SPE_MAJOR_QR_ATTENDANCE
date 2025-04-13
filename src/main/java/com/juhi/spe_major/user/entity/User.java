@@ -1,8 +1,9 @@
-package com.juhi.spe_major.user.model;
+package com.juhi.spe_major.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -15,6 +16,9 @@ public class User {
     private String email;
     private String password;
     private String role;
+
+    @Column(nullable = false)
+    private String imagePath;
 
     // Getters and Setters
     public Long getUserid() {
@@ -56,4 +60,38 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 }
+
+//package com.juhi.spe_major.user.model;
+//
+//import jakarta.persistence.*;
+//import lombok.*;
+//
+//@Entity
+//@Table(name = "users")
+//@Getter
+//@Setter
+//@NoArgsConstructor
+//@AllArgsConstructor
+//public class User {
+//
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long userid;
+//
+//    private String username;
+//    private String email;
+//    private String password;
+//    private String role;
+//
+//    @Column(nullable = false)
+//    private String imagePath;
+//}

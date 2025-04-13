@@ -1,7 +1,9 @@
 package com.juhi.spe_major.user.controller;
 
 import com.juhi.spe_major.user.model.LoginRequest;
-import com.juhi.spe_major.user.model.User;
+import com.juhi.spe_major.user.entity.User;
+import com.juhi.spe_major.user.model.UserResponseDTO;
+import com.juhi.spe_major.user.model.userRegisterDto;
 import com.juhi.spe_major.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,38 +19,30 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
+    //private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
+    public AuthController( UserService userService) {
+        //this.authenticationManager = authenticationManager;
+        this.userService = userService;
     }
-
-    @Autowired
-    private UserService userService;
+//
+//    @Autowired
+//    private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
+    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody userRegisterDto user) {
         // Register the user
-        User registeredUser = userService.registerUser(user);
+        UserResponseDTO registeredUser = userService.registerUser(user).getBody();
+
+        // Return the response
         return ResponseEntity.ok(registeredUser);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getEmail(),
-                            loginRequest.getPassword()
-                    )
-            );
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            return "Login successful!";
-        } catch (BadCredentialsException e) {
-            return "Invalid username or password!";
-        }
+    public ResponseEntity<?> login(@RequestBody  LoginRequest request) {
+        return userService.loginChecking(request);
     }
 
 }
