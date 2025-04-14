@@ -5,6 +5,7 @@ import com.juhi.spe_major.user.entity.User;
 import com.juhi.spe_major.user.model.UserResponseDTO;
 import com.juhi.spe_major.user.model.userRegisterDto;
 import com.juhi.spe_major.user.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,9 +13,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-
+@Component
 @RestController
 @RequestMapping("/api/users")
 public class AuthController {
@@ -32,7 +34,7 @@ public class AuthController {
 //    private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody userRegisterDto user) {
+    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody @Valid  userRegisterDto user) {
         // Register the user
         UserResponseDTO registeredUser = userService.registerUser(user).getBody();
 
@@ -41,7 +43,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody  LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest request) {
         return userService.loginChecking(request);
     }
 

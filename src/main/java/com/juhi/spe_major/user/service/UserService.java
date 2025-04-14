@@ -22,6 +22,12 @@ public class UserService  {
     private UserRepository userRepository;
     private JWTUtility jwtUtility;
 
+    @Autowired
+    public UserService(UserRepository userRepository, JWTUtility jwtUtility) {
+        this.userRepository = userRepository;
+        this.jwtUtility = jwtUtility;  // Inject JWTUtility here
+    }
+
     // Register User Method
     public ResponseEntity<UserResponseDTO> registerUser(userRegisterDto dto) {
         // Edge Case 1: If role is STUDENT, imagePath must not be null
